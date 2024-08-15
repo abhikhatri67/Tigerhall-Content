@@ -1,6 +1,16 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  colors: {
+    darkGray: {
+      500: "#070708",
+      900: "#383733",
+    },
+    grey: {
+      700: "#797670",
+      900: "#383733",
+    },
+  },
   fonts: {
     heading: "PP Neue Montreal Book, sans-serif",
     body: "PP Neue Montreal Book, sans-serif",

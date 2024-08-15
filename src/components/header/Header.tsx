@@ -1,20 +1,28 @@
-import { InputGroup, Input, InputLeftElement } from "@chakra-ui/react";
+import React from "react";
+import { InputGroup, Input, InputLeftElement, Flex, Image, Box, useColorModeValue } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { Flex } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
+import { IMAGE_URL, TIGERHALL_LOGO } from "../../constants";
 
-const Header = () => {
+const Header: React.FC = () => {
+  // Replace values for dark/light mode here.
+  const bgColor: string = useColorModeValue("darkGray.500", "darkGray.500");
+  const bgColorInput: string = useColorModeValue("darkGray.900", "darkGray.900");
+  const borderColor: string = useColorModeValue("grey.700", "grey.700");
+  const textColor: string = useColorModeValue("gray.300", "gray.500");
+
   return (
     <header>
-      <Flex justify="center" p={4}>
-        <Image height="28px" src="/images/Tigerhall-horizontal-logo.svg" alt="Logo" />
-        <InputGroup width="30%" mx="auto" size="sm">
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon />
-          </InputLeftElement>
-          <Input type="text" placeholder="Search.." />
-        </InputGroup>
-      </Flex>
+      <Box p={4} bg={bgColor}>
+        <Flex justify="center">
+          <Image height="28px" src={IMAGE_URL + TIGERHALL_LOGO} alt="Tigerhall Logo" />
+          <InputGroup width={{ base: "100%", md: "50%" }} mx="auto" size="md" bg={bgColorInput} borderRadius="4px" borderColor={borderColor} color={textColor}>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="white" />
+            </InputLeftElement>
+            <Input type="text" placeholder="Search.." aria-label="Search through content" />
+          </InputGroup>
+        </Flex>
+      </Box>
     </header>
   );
 };
