@@ -5,6 +5,7 @@
 1. Project step using vite.
 2. Added Chakra UI theme, montreal fonts and header component.
 3. Fixed header CSS, added colors as constants to support dark/light theme and added constants file.
+4. Added Apollo graphQL client, created library and podcast components, removed unused css files and added Podcast graphQL query.
 
 # React + TypeScript + Vite
 
