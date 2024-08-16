@@ -1,25 +1,42 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { InputGroup, Input, InputLeftElement, Flex, Image, Box, useColorModeValue } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { IMAGE_URL, TIGERHALL_LOGO } from "../../constants";
+import { debounce } from "../../helpers/utils";
 
 const Header: React.FC = () => {
+  const [keyword, setKeyword] = useState<string>("");
+
   // Replace values for dark/light mode here.
   const bgColor: string = useColorModeValue("darkGray.500", "darkGray.500");
   const bgColorInput: string = useColorModeValue("darkGray.900", "darkGray.900");
   const borderColor: string = useColorModeValue("grey.700", "grey.700");
   const textColor: string = useColorModeValue("gray.300", "gray.500");
 
+  const debouncedSetKeyword = useCallback(
+    debounce((newKeyword: string) => {
+      console.log("newKeyword: ", newKeyword);
+      setKeyword(newKeyword);
+    }, 300), // 300ms delay
+    []
+  );
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    debouncedSetKeyword(value);
+  };
+
   return (
     <header>
       <Box p={4} bg={bgColor}>
         <Flex justify="center">
           <Image height="28px" src={IMAGE_URL + TIGERHALL_LOGO} alt="Tigerhall Logo" />
+
           <InputGroup width={{ base: "100%", md: "50%" }} mx="auto" size="md" bg={bgColorInput} borderRadius="4px" borderColor={borderColor} color={textColor}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="white" />
             </InputLeftElement>
-            <Input type="text" placeholder="Search.." aria-label="Search through content" />
+            <Input type="text" placeholder="Search.." aria-label="Search through content" onChange={handleInputChange} />
           </InputGroup>
         </Flex>
       </Box>

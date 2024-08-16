@@ -18,7 +18,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ name, imageUri }) => {
       </Box>
 
       <Box position="relative">
-        <Image height="120px" width="244px" borderTopLeftRadius="8px" borderTopRightRadius="8px" src={imageUri} alt="Podcast Image" />
+        <Image height="120px" width="244px" borderTopLeftRadius="8px" borderTopRightRadius="6px" src={imageUri} alt="Podcast Image" />
         <Image src={"/images/Content-identifier-lg.svg"} position="absolute" bottom="8px" left="8px" alt="Content Identifier" />
         <Box position="absolute" bottom="8px" right="8px" display="flex" gap="4px" color="white" bg="black" opacity="70%" borderRadius="100px" padding="4px 8px">
           <TimeIcon color="white" />
@@ -30,7 +30,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ name, imageUri }) => {
 
       <CardBody p="8px">
         <Text fontSize="xs">COMMUNICATING AS A LEADER</Text>
-        <Text fontSize="md" fontWeight="bold">
+        <Text height="50px" fontSize="md" fontWeight="bold">
           {name}
         </Text>
         <Text fontSize="xs">Jane Doe</Text>
