@@ -7,6 +7,8 @@ export const GET_PODCASTS = gql`
       edges {
         ... on Podcast {
           name
+          id
+          length
           image {
             ...Image
           }

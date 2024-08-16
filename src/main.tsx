@@ -6,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import App from "./App.tsx";
 
-import theme from "./theme/Theme.ts";
+import theme from "./theme/theme.ts";
 
 import { GRAPHQL_ENDPOINT } from "./constants.ts";
 

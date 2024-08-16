@@ -8,7 +8,9 @@ function App() {
   return (
     <main>
       <Header />
-      <Library />
+      <main>
+        <Library />
+      </main>
     </main>
   );
 }
