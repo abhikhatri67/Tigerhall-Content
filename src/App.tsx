@@ -1,15 +1,20 @@
+import React, { useState } from "react";
 import Header from "./components/header/Header";
 import { Library } from "./components/library/Library";
 
-function App() {
+const App: React.FC = () => {
+  const [keyword, setKeyword] = useState<string>("");
+
+  const handleSearch = (value: string): void => setKeyword(value);
+
   return (
     <main>
-      <Header />
+      <Header onSearch={handleSearch} />
       <main>
-        <Library />
+        <Library keyword={keyword} />
       </main>
     </main>
   );
-}
+};
 
 export default App;

@@ -1,13 +1,16 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { InputGroup, Input, InputLeftElement, Flex, Image, Box, useColorModeValue } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { IMAGE_URL, TIGERHALL_LOGO } from "../../constants";
 import { debounce } from "../../helpers/utils";
 
-const Header: React.FC = () => {
-  const [keyword, setKeyword] = useState<string>("");
+interface HeadingProps {
+  onSearch: (key: string) => void;
+}
 
+const Header: React.FC<HeadingProps> = ({ onSearch }) => {
   // Replace values for dark/light mode here.
+
   const bgColor: string = useColorModeValue("darkGray.500", "darkGray.500");
   const bgColorInput: string = useColorModeValue("darkGray.900", "darkGray.900");
   const borderColor: string = useColorModeValue("grey.700", "grey.700");
@@ -15,8 +18,7 @@ const Header: React.FC = () => {
 
   const debouncedSetKeyword = useCallback(
     debounce((newKeyword: string) => {
-      console.log("newKeyword: ", newKeyword);
-      setKeyword(newKeyword);
+      onSearch(newKeyword);
     }, 300), // 300ms delay
     []
   );

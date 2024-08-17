@@ -1,17 +1,22 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import { useQuery } from "@apollo/client";
-import { GET_PODCASTS, ContentCardsData, ContentCardsVars } from "../../podcastQuery";
-import PodcastCard from "./Podcast";
+
+import SpinnerLoader from "../loaders/Spinner";
+import Error from "../error/Error";
+import PodcastCard from "./PodcastCard";
+
+import { ContentCardsData, PodcastVars } from "../../data/types";
+import { GET_PODCASTS } from "../../data/podcastQuery";
 import { addResizeToUri } from "../../helpers/utils";
 
-const PodcastList: React.FC = () => {
-  const { loading, error, data } = useQuery<ContentCardsData, ContentCardsVars>(GET_PODCASTS, {
-    variables: { keyword: "" },
+const PodcastList: React.FC<{ keyword: string }> = ({ keyword }) => {
+  const { loading, error, data } = useQuery<ContentCardsData, PodcastVars>(GET_PODCASTS, {
+    variables: { keyword, limit: 20 },
   });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <SpinnerLoader />;
+  if (error) return <Error message={error?.message || "Something went wrong!"} />;
 
   const podcasts = data?.contentCards.edges || [];
 
