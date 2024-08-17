@@ -13,13 +13,21 @@ import { addResizeToUri } from "../../helpers/utils";
 const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
   const [offset, setOffset] = useState(0);
   const [contents, setContents] = useState<Content[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
+  // TODO: Fix multiple api calls logic.
   const { loading, error, fetchMore } = useQuery<ContentCardsData, ContentVars>(GET_CONTENT, {
     variables: { keyword, limit: 15, offset },
     notifyOnNetworkStatusChange: true,
     onCompleted: newData => {
-      setContents(prevContents => [...prevContents, ...newData.contentCards.edges]);
-      setOffset(prevOffset => prevOffset + newData.contentCards.edges.length);
+      if (newData.contentCards.edges.length === 0) {
+        setHasMore(false);
+      } else {
+        setContents(prevContents => [...prevContents, ...newData.contentCards.edges]);
+        setOffset(prevOffset => prevOffset + newData.contentCards.edges.length);
+      }
+      setIsFetching(false);
     },
   });
 
@@ -27,16 +35,18 @@ const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
     const scrollPosition = window.innerHeight + document.documentElement.scrollTop;
     const bottomPosition = document.documentElement.offsetHeight;
 
-    if (scrollPosition >= bottomPosition - 200 && !loading) {
+    if (scrollPosition >= bottomPosition - 200 && !loading && !isFetching && hasMore) {
+      setIsFetching(true);
+
       fetchMore({
         variables: {
           offset: contents.length,
         },
-      }).catch(error => {
-        console.log("error: ", error);
+      }).catch(() => {
+        setIsFetching(false);
       });
     }
-  }, [contents.length, fetchMore, loading]);
+  }, [contents.length, fetchMore, loading, isFetching, hasMore]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -47,8 +57,9 @@ const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
   if (error) return <Error message={error?.message || "Something went wrong!"} />;
 
   return (
-    <Box display="flex" flexWrap="wrap" gap="24px" mt="40px" justifyContent={{ base: "center", md: "left " }}>
+    <Box display="flex" flexWrap="wrap" gap="24px" mt="40px" justifyContent={{ base: "center", md: "left" }}>
       {contents.map(content => {
+        // TODO: Move these to utils.
         const { categories, experts, name, length } = content;
         const category = categories[0]?.name.split("category ")[1] || "Placeholder Category";
         const expert = experts[0];
@@ -57,6 +68,11 @@ const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
         return <ContentCard key={content.id} contentCategory={category} description={name} imageUri={addResizeToUri(content.image?.uri)} time={time} expertName={`${expert.firstName} ${expert.lastName}`} expertCompany={company} />;
       })}
       {loading && <SpinnerLoader />}
+      {!hasMore && (
+        <Box textAlign="center" w="100%" mt="20px" color="white">
+          You are all set up!
+        </Box>
+      )}
     </Box>
   );
 };

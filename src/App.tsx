@@ -8,12 +8,12 @@ const App: React.FC = () => {
   const handleSearch = (value: string): void => setKeyword(value);
 
   return (
-    <main>
+    <div>
       <Header onSearch={handleSearch} />
       <main>
         <Library keyword={keyword} />
       </main>
-    </main>
+    </div>
   );
 };
 
