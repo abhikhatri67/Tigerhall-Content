@@ -17,16 +17,16 @@ export function addResizeToUri(uri: string, height: number = 244, width: number 
   }
 }
 
-type DebounceFunction = (...args: unknown[]) => void;
+type DebounceFunction<T extends (...args: any[]) => any> = (...args: Parameters<T>) => void;
 
-export function debounce(func: DebounceFunction, wait: number): DebounceFunction {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): DebounceFunction<T> {
   let timeoutId: number | null = null;
 
-  return function (this: any, ...args: any[]) {
-    if (timeoutId) {
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>): void {
+    if (timeoutId !== null) {
       clearTimeout(timeoutId);
     }
-    timeoutId = setTimeout(() => {
+    timeoutId = window.setTimeout(() => {
       func.apply(this, args);
     }, wait);
   };
