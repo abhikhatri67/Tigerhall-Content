@@ -14,21 +14,23 @@ export interface Expert {
   company: string;
 }
 
-export interface Podcast {
+export interface Content {
   id: string;
   name: string;
   image: Image;
   categories: Category[];
   experts: Expert[];
+  length: number;
 }
 
 export interface ContentCardsData {
   contentCards: {
-    edges: Podcast[];
+    edges: Content[];
   };
 }
 
-export interface PodcastVars {
+export interface ContentVars {
   keyword: string;
   limit: number;
+  offset: number;
 }

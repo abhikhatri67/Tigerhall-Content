@@ -1,6 +1,27 @@
-# TigerHall
+# TigerHall Content
 
-## Steps:
+## Project Setup
+
+This project is created from vite.
+
+## Tech Stack
+
+React, TypeScript, and Chakra UI
+
+## How to run the project:
+
+- Clone the repository.
+  `https://github.com/abhikhatri67/Tigerhall-Content`
+- Go to directoy and Install node modules and Dependencies.
+  `npm install`
+- Then Run
+  `npm run dev`
+
+## Write me
+
+abhikhatri67@gmail.com
+
+## Logs:
 
 1. Project step using vite.
 2. Added Chakra UI theme, montreal fonts and header component.
@@ -11,3 +32,4 @@
 7. Added Spinner and error component, Search functionality added with debounce, some restrcuturing of files and cleaned README.
 8. Fixed build issue in debounce function.
 9. Fixed build issue in theme import.
+10. Changed file names and type to wrt content, added fonts in theme, added api data in cards and updated readme.

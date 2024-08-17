@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 // GraphQL Query
-export const GET_PODCASTS = gql`
-  query GetPodcasts($limit: Int!, $keyword: String!) {
-    contentCards(filter: { limit: $limit, keywords: $keyword, types: [PODCAST] }) {
+export const GET_CONTENT = gql`
+  query GetPodcasts($limit: Int!, $keyword: String!, $offset: Int) {
+    contentCards(filter: { limit: $limit, offset: $offset, keywords: $keyword, types: [PODCAST] }) {
       edges {
         ... on Podcast {
           name
