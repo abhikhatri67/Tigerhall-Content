@@ -36,7 +36,7 @@ const Header: React.FC<HeadingProps> = ({ onSearch }) => {
     <header>
       <Box p={4} bg={bgColor}>
         <Flex justify="center" alignItems="center">
-          <Image height="28px" src={imageSrc} alt="Tigerhall Logo" />
+          <Image ml={2} height="28px" src={imageSrc} alt="Tigerhall Logo" />
 
           <InputGroup width={{ base: "70%", md: "50%" }} mx="auto" size="md" bg={bgColorInput} borderRadius="4px" borderColor={borderColor} color={textColor}>
             <InputLeftElement pointerEvents="none">

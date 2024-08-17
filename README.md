@@ -33,3 +33,4 @@ abhikhatri67@gmail.com
 8. Fixed build issue in debounce function.
 9. Fixed build issue in theme import.
 10. Changed file names and type to wrt content, added fonts in theme, added api data in cards and updated readme.
+11. Separate component for Status and progress bar, implemented infinte scroll and some UI fixes.
