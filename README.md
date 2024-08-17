@@ -10,3 +10,4 @@
 6. Removed unnecessary css files, some fixes in podcast card and implemented debounce for input change.
 7. Added Spinner and error component, Search functionality added with debounce, some restrcuturing of files and cleaned README.
 8. Fixed build issue in debounce function.
+9. Fixed build issue in theme import.
