@@ -12,10 +12,14 @@ React, TypeScript, and Chakra UI
 
 - Clone the repository.
   `https://github.com/abhikhatri67/Tigerhall-Content`
+- Check your node version.
+  `Vite requires Node.js version 18+ or 20+.`
 - Go to directoy and Install node modules and Dependencies.
   `npm install`
 - Then Run
   `npm run dev`
+- Go to
+  `http://localhost:5173/`
 
 ## Write me
 
@@ -35,3 +39,4 @@ abhikhatri67@gmail.com
 10. Changed file names and type to wrt content, added fonts in theme, added api data in cards and updated readme.
 11. Separate component for Status and progress bar, implemented infinte scroll and some UI fixes.
 12. Fixed infinite scroll multiple calls through flag.
+13. Added custom hook for content query and fixed multiple intial call issue.

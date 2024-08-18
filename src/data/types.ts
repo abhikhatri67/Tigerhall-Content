@@ -27,10 +27,16 @@ export interface ContentCardsData {
   contentCards: {
     edges: Content[];
   };
+  meta: Meta;
 }
 
 export interface ContentVars {
   keyword: string;
   limit: number;
+  offset: number;
+}
+
+export interface Meta {
+  total: number;
   offset: number;
 }

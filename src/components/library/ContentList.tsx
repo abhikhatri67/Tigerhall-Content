@@ -1,79 +1,76 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@chakra-ui/react";
-import { useQuery } from "@apollo/client";
 
 import SpinnerLoader from "../loaders/Spinner";
 import Error from "../error/Error";
 import ContentCard from "./ContentCard";
 
-import { Content, ContentCardsData, ContentVars } from "../../data/types";
-import { GET_CONTENT } from "../../data/podcastQuery";
+import { Content } from "../../data/types";
 import { addResizeToUri } from "../../helpers/utils";
 
-const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
-  const [offset, setOffset] = useState(0);
-  const [contents, setContents] = useState<Content[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+import useContentQuery from "../../hooks/useContentQuery";
 
-  // TODO: Fix multiple api calls logic.
-  const { loading, error, fetchMore } = useQuery<ContentCardsData, ContentVars>(GET_CONTENT, {
-    variables: { keyword, limit: 15, offset },
-    notifyOnNetworkStatusChange: true,
-    onCompleted: newData => {
-      if (newData.contentCards.edges.length === 0) {
-        setHasMore(false);
+const ContentList: React.FC<{ keyword: string }> = ({ keyword }) => {
+  const [contents, setContents] = useState<Content[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+  const [offset, setOffset] = useState(0);
+
+  const { loading, error, data } = useContentQuery(keyword, offset);
+
+  useEffect(() => {
+    if (!data) return;
+    if (data.contentCards.edges.length === 0) {
+      setHasMore(false);
+    } else {
+      if (keyword) {
+        setContents([...data.contentCards.edges]);
       } else {
-        setContents(prevContents => [...prevContents, ...newData.contentCards.edges]);
-        setOffset(prevOffset => prevOffset + newData.contentCards.edges.length);
+        setContents(prevContents => [...prevContents, ...data.contentCards.edges]);
       }
-      setIsFetching(false);
-    },
-  });
+    }
+  }, [data, keyword]);
 
   const handleScroll = useCallback(() => {
     const scrollPosition = window.innerHeight + document.documentElement.scrollTop;
     const bottomPosition = document.documentElement.offsetHeight;
 
-    if (scrollPosition >= bottomPosition - 200 && !loading && !isFetching && hasMore) {
+    if (scrollPosition >= bottomPosition - 50 && !loading && !isFetching && hasMore) {
       setIsFetching(true);
 
-      fetchMore({
-        variables: {
-          offset: contents.length,
-        },
-      }).catch(() => {
-        setIsFetching(false);
-      });
+      setOffset(keyword ? 0 : contents.length);
+      window.scrollTo(0, bottomPosition - 50);
     }
-  }, [contents.length, fetchMore, loading, isFetching, hasMore]);
+  }, [contents.length, loading, isFetching, hasMore, keyword]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  if (loading && offset === 0) return <SpinnerLoader />;
+  if (loading && contents.length === 0) return <SpinnerLoader />;
   if (error) return <Error message={error?.message || "Something went wrong!"} />;
 
   return (
-    <Box display="flex" flexWrap="wrap" gap="24px" mt="40px" justifyContent={{ base: "center", md: "left" }}>
-      {contents.map(content => {
-        // TODO: Move these to utils.
-        const { categories, experts, name, length } = content;
-        const category = categories[0]?.name.split("category ")[1] || "Placeholder Category";
-        const expert = experts[0];
-        const company = expert?.company || "Placeholder Company";
-        const time = `${Math.round(length / 60)}m`;
-        return <ContentCard key={content.id} contentCategory={category} description={name} imageUri={addResizeToUri(content.image?.uri)} time={time} expertName={`${expert.firstName} ${expert.lastName}`} expertCompany={company} />;
-      })}
+    <section>
+      <Box display="flex" flexWrap="wrap" gap="24px" mt="40px" justifyContent={{ base: "center", md: "left" }}>
+        {contents.map(content => {
+          // TODO: Move this to helper file.
+          const { categories, experts, name, length } = content;
+          const category = categories[0]?.name.split("category ")[1] || "Placeholder Category";
+          const expert = experts[0];
+          const company = expert?.company || "Placeholder Company";
+          const time = `${Math.round(length / 60)}m`;
+          return <ContentCard key={content.id} contentCategory={category} description={name} imageUri={addResizeToUri(content.image?.uri)} time={time} expertName={`${expert.firstName} ${expert.lastName}`} expertCompany={company} />;
+        })}
+      </Box>
       {loading && <SpinnerLoader />}
       {!hasMore && (
         <Box textAlign="center" w="100%" mt="20px" color="white">
           You are all set up!
         </Box>
       )}
-    </Box>
+    </section>
   );
 };
 
